@@ -10,6 +10,8 @@ import {
     rememberReturnTo,
 } from '../lib/ssoSession';
 
+const BACKEND_URL = (import.meta.env.VITE_APP_URL || import.meta.env.VITE_API_URL || 'http://41.216.191.37:8000').replace(/\/$/, '');
+
 const navLinks = [
     { label: 'Beranda',    href: '/#home',       icon: 'fa-home' },
     { label: 'Profil',     href: '/#profil',     icon: 'fa-city',
@@ -95,7 +97,7 @@ export default function Navbar() {
     const handleAuthAction = async () => {
         if (!isLoggedIn) {
             rememberReturnTo(`${location.pathname}${location.search}${location.hash}`);
-            window.location.href = 'http://41.216.191.39:5174/auth/sso/redirect';
+            window.location.href = `${BACKEND_URL}/auth/sso/redirect`;
             return;
         }
 
