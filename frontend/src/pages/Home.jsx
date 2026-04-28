@@ -878,7 +878,7 @@ function BeritaSection() {
     const [berita, setBerita] = useState([]);
     const [filter, setFilter] = useState('semua');
     const [loading, setLoading] = useState(true);
-    const BASE_IMAGE_URL = 'http://localhost:8000/storage/';
+    const BASE_IMAGE_URL = 'http://41.216.191.37:8000/storage/';
 
     useEffect(() => {
         api.get('/berita')
@@ -1091,7 +1091,7 @@ function EventSection() {
                         const gambar = e.thumbnail
                             ? e.thumbnail.startsWith('http')
                                 ? e.thumbnail
-                                : `${import.meta.env.VITE_APP_URL ?? 'http://localhost:8000'}/storage/event/${e.thumbnail}`
+                                : `${import.meta.env.VITE_APP_URL ?? 'http://41.216.191.37:8000'}/storage/event/${e.thumbnail}`
                             : 'https://placehold.co/640x480?text=No+Image';
  
                         return {

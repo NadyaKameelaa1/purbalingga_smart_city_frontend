@@ -31,9 +31,9 @@ Route::get('/auth/sso/callback', function () {
 
         // Kirim token ke frontend via query string
         // Frontend akan ambil token ini dan simpan ke localStorage
-        return redirect('http://localhost:5173/sso-callback?token=' . $token);
+        return redirect('http://41.216.191.37:5173/sso-callback?token=' . $token);
 
     } catch (\Throwable $e) {
-        return redirect('http://localhost:5173/login?error=sso_failed');
+        return redirect('http://41.216.191.37:5173/login?error=sso_failed');
     }
 });

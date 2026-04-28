@@ -1143,7 +1143,7 @@ export default function KelolaBangunan() {
 
 
   const openEdit = (b) => {
-    const baseUrl = import.meta.env.VITE_APP_URL || "http://localhost:8000";
+    const baseUrl = import.meta.env.VITE_APP_URL || "http://41.216.191.37:8000";
     setEditTarget(b);
     const cat = categories.find((c) => c.id == b.category_id);
     setForm({
@@ -1293,7 +1293,7 @@ export default function KelolaBangunan() {
   const getThumbUrl = (path) => {
     if (!path) return null;
     if (path.startsWith("http")) return path;
-    const baseUrl = import.meta.env.VITE_APP_URL || "http://localhost:8000";
+    const baseUrl = import.meta.env.VITE_APP_URL || "http://41.216.191.37:8000";
     return `${baseUrl}/storage/${path}`;
   };
 
