@@ -21,12 +21,9 @@ return [
 
     'allowed_origins' => [
         'http://41.216.191.37:5173',
+        'http://41.216.191.37:8000',
+        'http://41.216.191.39:5173',
         'http://41.216.191.39:5174',
-        'http://127.0.0.1:5173', 
-        'http://127.0.0.1:8000', 
-        'http://41.216.191.37', 
-        'http://41.216.191.37/api', 
-        "http://41.216.191.37:5173",
         'https://purbalinggasmartcity.netlify.app',  
         'http://smartcitybackend-main-oqgeeg.free.laravel.cloud', 
         ],

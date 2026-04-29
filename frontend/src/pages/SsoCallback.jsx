@@ -11,6 +11,27 @@ export default function SsoCallback() {
   const navigate = useNavigate();
   const [message, setMessage] = useState('Sedang memproses login...');
 
+  const resolvePostLoginTarget = (returnTo) => {
+    const fallbackPath = '/';
+
+    if (!returnTo) {
+      return fallbackPath;
+    }
+
+    try {
+      const pathname = new URL(returnTo, window.location.origin).pathname;
+      const authPages = new Set(['/login', '/daftar', '/callback', '/sso-callback']);
+
+      if (authPages.has(pathname) || pathname === '/') {
+        return fallbackPath;
+      }
+
+      return returnTo;
+    } catch {
+      return fallbackPath;
+    }
+  };
+
   useEffect(() => {
     const run = async () => {
       const params = new URLSearchParams(window.location.search);
@@ -48,7 +69,7 @@ export default function SsoCallback() {
       const returnTo = getReturnToPath();
       clearReturnToPath();
       window.history.replaceState({}, document.title, window.location.pathname);
-      navigate(returnTo || '/', { replace: true });
+      navigate(resolvePostLoginTarget(returnTo), { replace: true });
     };
 
     run();

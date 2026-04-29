@@ -1,6 +1,7 @@
 // src/pages/EditProfile.jsx
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { getSsoDashboardUrl, getStoredSsoToken, getStoredSsoUser } from '../lib/ssoSession';
 
 // ── Data kecamatan & desa Purbalingga (sesuaikan dengan API/DB kamu) ──────────
 const kecamatanData = [
@@ -66,7 +67,7 @@ const initialUser = {
 };
 
 export default function EditProfile() {
-    const navigate = useNavigate();
+    const dashboardUrl = getSsoDashboardUrl(getStoredSsoUser(), getStoredSsoToken());
     const [form, setForm] = useState(initialUser);
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
@@ -105,7 +106,7 @@ export default function EditProfile() {
         await new Promise((r) => setTimeout(r, 900));
         setSaving(false);
         setSaved(true);
-        setTimeout(() => { setSaved(false); navigate('/profile'); }, 1800);
+        setTimeout(() => { setSaved(false); window.location.href = dashboardUrl; }, 1800);
     };
 
     return (
@@ -491,7 +492,7 @@ export default function EditProfile() {
                     <div className="ep-breadcrumb">
                         <Link to="/"><i className="fas fa-home" /></Link>
                         <i className="fas fa-chevron-right" />
-                        <Link to="/profile">Profil</Link>
+                        <a href={dashboardUrl}>Profil</a>
                         <i className="fas fa-chevron-right" />
                         <span>Lengkapi Profil</span>
                     </div>
@@ -692,9 +693,9 @@ export default function EditProfile() {
 
                         {/* ── Submit ── */}
                         <div className="ep-submit-bar">
-                            <Link to="/profile" className="btn-cancel">
+                            <a href={dashboardUrl} className="btn-cancel">
                                 <i className="fas fa-arrow-left" /> Batal
-                            </Link>
+                            </a>
                             <button
                                 type="submit"
                                 className={`btn-save${saved ? ' saved' : ''}`}

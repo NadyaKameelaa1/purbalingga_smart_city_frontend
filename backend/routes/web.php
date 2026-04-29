@@ -31,9 +31,13 @@ Route::get('/auth/sso/callback', function () {
 
         // Kirim token ke frontend via query string
         // Frontend akan ambil token ini dan simpan ke localStorage
-        return redirect('http://41.216.191.37:5173/sso-callback?token=' . $token);
+        $frontendUrl = rtrim(config('services.sso.frontend_url', 'http://41.216.191.37:5173'), '/');
+
+        return redirect($frontendUrl . '/sso-callback?token=' . $token);
 
     } catch (\Throwable $e) {
-        return redirect('http://41.216.191.37:5173/login?error=sso_failed');
+        $frontendUrl = rtrim(config('services.sso.frontend_url', 'http://41.216.191.37:5173'), '/');
+
+        return redirect($frontendUrl . '/login?error=sso_failed');
     }
 });

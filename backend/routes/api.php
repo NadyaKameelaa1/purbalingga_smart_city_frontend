@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BeritaController;
 use App\Http\Controllers\Api\BuildingCategoriesController;
 use App\Http\Controllers\Api\BuildingController;
@@ -19,20 +20,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\Wisata;
 
-// use App\Models\User;
-// use Illuminate\Support\Facades\Auth;
-// use App\Http\Controllers\Api\AuthController;
-// use Laravel\Socialite\Facades\Socialite;
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login',    [AuthController::class, 'login']);
 
-// Route::prefix('auth')->group(function () {
-//     Route::post('/register', [AuthController::class, 'register']);
-//     Route::post('/login',    [AuthController::class, 'login']);
- 
-//     Route::middleware('auth:sanctum')->group(function () {
-//         Route::post('/logout', [AuthController::class, 'logout']);
-//         Route::get('/me',      [AuthController::class, 'me']);
-//     });
-// });
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/me',      [AuthController::class, 'me']);
+    });
+});
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/tiket',       [TicketOrderController::class, 'store']);

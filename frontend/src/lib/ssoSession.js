@@ -3,6 +3,10 @@ const LEGACY_TOKEN_KEY = 'auth_token';
 const USER_KEY = 'sso_user';
 const RETURN_TO_KEY = 'sso_return_to';
 const SESSION_EVENT = 'sso-session-changed';
+const SSO_BASE_URL = (import.meta.env.VITE_SSO_BASE_URL || 'http://41.216.191.39:5174').replace(/\/$/, '');
+const SSO_DASHBOARD_PATH = (import.meta.env.VITE_SSO_DASHBOARD_PATH || '/dashboard').startsWith('/')
+  ? (import.meta.env.VITE_SSO_DASHBOARD_PATH || '/dashboard')
+  : `/${import.meta.env.VITE_SSO_DASHBOARD_PATH || 'dashboard'}`;
 
 function emitSessionChange() {
   if (typeof window === 'undefined') {
@@ -122,4 +126,30 @@ export function listenSsoSessionChange(handler) {
     window.removeEventListener(SESSION_EVENT, handler);
     window.removeEventListener('storage', handler);
   };
+}
+
+export function getSsoDashboardUrl(user = null, token = null) {
+  const role = String(user?.role || '').toLowerCase();
+  const query = new URLSearchParams();
+  query.set('source', 'smartcity');
+
+  if (token) {
+    query.set('token', token);
+    query.set('auth_token', token);
+  }
+
+  if (role === 'admin' && import.meta.env.VITE_SSO_ADMIN_DASHBOARD_PATH) {
+    const adminPath = import.meta.env.VITE_SSO_ADMIN_DASHBOARD_PATH;
+    const url = `${SSO_BASE_URL}${adminPath.startsWith('/') ? adminPath : `/${adminPath}`}`;
+    return query.toString() ? `${url}?${query.toString()}` : url;
+  }
+
+  if (role === 'superadmin' && import.meta.env.VITE_SSO_SUPERADMIN_DASHBOARD_PATH) {
+    const superAdminPath = import.meta.env.VITE_SSO_SUPERADMIN_DASHBOARD_PATH;
+    const url = `${SSO_BASE_URL}${superAdminPath.startsWith('/') ? superAdminPath : `/${superAdminPath}`}`;
+    return query.toString() ? `${url}?${query.toString()}` : url;
+  }
+
+  const url = `${SSO_BASE_URL}${SSO_DASHBOARD_PATH}`;
+  return query.toString() ? `${url}?${query.toString()}` : url;
 }

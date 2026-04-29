@@ -17,7 +17,6 @@ import Pejabat      from './pages/Pejabat';
 import Search           from './pages/Search';
 import Tiket            from './pages/Tiket';
 import Peta             from './pages/Peta';
-import Profile          from './pages/Profile';
 import EditProfile      from './pages/EditProfile';
 import Pelayanan from './pages/Pelayanan';
 import RiwayatTiket from './pages/RiwayatTiket';
@@ -122,7 +121,6 @@ function Layout() {
 
                     
                     <Route path="/tiket"              element={<Tiket />} />
-                    <Route path="/profile"            element={<Profile />} />
                     <Route path="/peta"               element={<Peta />} />
                     <Route path="/profile/edit" element={<EditProfile />} />
 

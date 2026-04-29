@@ -5,6 +5,7 @@ import api from '../api/axios';
 import {
     clearSsoSession,
     getInitials,
+    getSsoDashboardUrl,
     getStoredSsoSession,
     listenSsoSessionChange,
     rememberReturnTo,
@@ -39,6 +40,10 @@ export default function Navbar() {
     const location = useLocation();
     const user = session?.user || null;
     const isLoggedIn = Boolean(session?.token);
+    const dashboardUrl = getSsoDashboardUrl(user, session?.token);
+    const profileLabel = (user?.name || user?.nama || user?.email || '')
+        .replace(/\s+/g, '')
+        .slice(0, 5) || 'Profil';
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 50);
@@ -112,6 +117,10 @@ export default function Navbar() {
         }
     };
 
+    const handleProfileClick = () => {
+        window.location.href = dashboardUrl;
+    };
+
     const navigateHome = () => {
         window.location.href = '/';
     };
@@ -134,6 +143,15 @@ export default function Navbar() {
                 .btn-login.logout:hover {
                     background: #991b1b;
                 }
+                .btn-profile {
+                    display: flex; align-items: center; gap: 7px;
+                    padding: 8px 18px; border-radius: 50px;
+                    background: rgba(64,114,175,.1); color: var(--teal-800);
+                    font-family: var(--font-body); font-size: 13px; font-weight: 700;
+                    border: 1px solid rgba(64,114,175,.18); cursor: pointer;
+                    transition: var(--transition); text-decoration: none;
+                }
+                .btn-profile:hover { background: rgba(64,114,175,.16); transform: translateY(-1px); }
 
                 /* ── Hamburger animation ── */
                 .hamburger { background: none; border: none; }
@@ -263,6 +281,16 @@ export default function Navbar() {
 
                         {/* Actions */}
                         <div className="navbar-actions">
+                            {isLoggedIn && (
+                                <button
+                                    type="button"
+                                    className="btn-profile"
+                                    onClick={handleProfileClick}
+                                >
+                                    <i className="fas fa-user-circle" />
+                                    {profileLabel}
+                                </button>
+                            )}
                             <button
                                 type="button"
                                 className={`btn-login${isLoggedIn ? ' logout' : ''}`}
@@ -326,13 +354,13 @@ export default function Navbar() {
                             <div className="mobile-avatar">{getInitials(user?.name || user?.nama || user?.email || '')}</div>
                             <div>
                                 <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--dark)' }}>{user?.name || user?.nama || user?.email}</div>
-                                <Link
-                                    to="/profile"
-                                    style={{ fontSize: 12, color: 'var(--teal-600)', fontWeight: 600, backgroundColor:'#eef3fa', borderRadius: 4, padding: '4px 8px' }}
-                                    onClick={() => setMobileOpen(false)}
+                                <button
+                                    type="button"
+                                    style={{ fontSize: 12, color: 'var(--teal-600)', fontWeight: 600, backgroundColor:'#eef3fa', borderRadius: 4, padding: '4px 8px', border: 'none', cursor: 'pointer' }}
+                                    onClick={() => { setMobileOpen(false); handleProfileClick(); }}
                                 >
-                                    Lihat Profil
-                                </Link>
+                                    {profileLabel}
+                                </button>
                             </div>
                         </div>
                     )}
